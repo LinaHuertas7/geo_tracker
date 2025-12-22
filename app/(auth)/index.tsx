@@ -51,9 +51,8 @@ export default function HomeScreen() {
 
 			await login(formDataToSend);
 
-			// Verificar si la autenticación fue exitosa
 			if (isAuthenticated) {
-				router.replace("/(tabs)/index");
+				router.replace("/(main)/devices");
 			}
 
 			setFormValues({
@@ -77,13 +76,13 @@ export default function HomeScreen() {
 		>
 			<View>
 				<AuthHeader
-					title="Sign In"
-					subtitle="Hi! Welcome back, you've been missed"
+					title="Iniciar Sesión"
+					subtitle="Bienvenido de nuevo, ingresa tus datos para continuar"
 				/>
 
 				<View>
 					<Input
-						label="Email"
+						label="Correo Electrónico"
 						placeholder="example@gmail.com"
 						value={formValues.email}
 						onChangeText={(text) =>
@@ -95,7 +94,7 @@ export default function HomeScreen() {
 
 					<View style={styles.passwordContainer}>
 						<Input
-							label="Password"
+							label="Contraseña"
 							placeholder="••••••••••"
 							value={formValues.password}
 							onChangeText={(text) =>
@@ -113,7 +112,7 @@ export default function HomeScreen() {
 
 				<View style={styles.buttonContainer}>
 					<Button
-						title="Sign In"
+						title="Iniciar Sesión"
 						onPress={handleAuth}
 						loading={loading}
 					/>

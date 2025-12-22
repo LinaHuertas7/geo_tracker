@@ -116,9 +116,6 @@ const useAuthStore = create<AuthState>()(
 					isAuthenticated: false,
 					error: null,
 				});
-				// Limpiar cookie
-				document.cookie =
-					"JSESSIONID=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/;";
 			},
 
 			clearError: () => set({ error: null }),

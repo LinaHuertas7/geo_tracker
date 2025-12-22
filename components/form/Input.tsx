@@ -1,4 +1,4 @@
-import { InputStyles } from "@/components/form/input.styles";
+import { createInputStyles } from "@/components/form/input.styles";
 import { Colors } from "@/constants/theme";
 import { AuthInputProps } from "@/types/form";
 import { Text } from "@react-navigation/elements";
@@ -15,7 +15,7 @@ const Input: React.FC<AuthInputProps> = ({
 	keyboardType,
 }) => {
 	const colorScheme = useColorScheme();
-	const styles = InputStyles(colorScheme ?? "light");
+	const styles = createInputStyles(colorScheme ?? "light");
 	const colors = Colors[colorScheme ?? "light"];
 
 	return (
