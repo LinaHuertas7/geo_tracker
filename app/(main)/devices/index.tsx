@@ -4,7 +4,7 @@ import Loading from "@/components/loading/Loadig";
 import { useColorScheme } from "@/hooks/use-color-scheme";
 import useDevicesStore from "@/store/devicesStore";
 import { useEffect, useMemo, useState } from "react";
-import { ScrollView, Text, View } from "react-native";
+import { RefreshControl, ScrollView, Text, View } from "react-native";
 import { createDevicesScreenStyles } from "./devices.styles";
 
 export default function DevicesScreen() {
@@ -12,6 +12,8 @@ export default function DevicesScreen() {
 	const [activeFilter, setActiveFilter] = useState<
 		"all" | "online" | "offline"
 	>("all");
+
+	const [refreshing, setRefreshing] = useState(false);
 
 	const devices = useDevicesStore((state) => state.devices);
 	const getDevices = useDevicesStore((state) => state.getDevices);
@@ -21,6 +23,12 @@ export default function DevicesScreen() {
 	useEffect(() => {
 		getDevices();
 	}, [getDevices]);
+
+	const onRefresh = async () => {
+		setRefreshing(true);
+		await getDevices();
+		setRefreshing(false);
+	};
 
 	const filteredDevices = useMemo(() => {
 		if (activeFilter === "all") return devices;
@@ -56,6 +64,12 @@ export default function DevicesScreen() {
 				<ScrollView
 					style={styles.listContainer}
 					showsVerticalScrollIndicator={false}
+					refreshControl={
+						<RefreshControl
+							refreshing={refreshing}
+							onRefresh={onRefresh}
+						/>
+					}
 				>
 					<DeviceFilter
 						activeFilter={activeFilter}
@@ -85,8 +99,8 @@ export default function DevicesScreen() {
 							) : (
 								<View style={styles.emptyState}>
 									<Text style={styles.emptyText}>
-										No devices found{"\n"}
-										Try adjusting your filters
+										No se encontraron dispositivos{"\n"}
+										Intenta ajustar tus filtros
 									</Text>
 								</View>
 							)}

@@ -31,7 +31,7 @@ export const Colors = {
 		surface: "#1E1E1E",
 		border: "#424242",
 		textSecondary: "#B0B0B0",
-		filterChipBackground: "#262535ff",
+		filterChipBackground: tintColorDark,
 		placeholder: "#616161",
 	},
 };
