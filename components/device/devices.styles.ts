@@ -11,8 +11,8 @@ export const createDevicesStyles = (
 		{ color: string; label: string; bgColor: string }
 	> = {
 		online: { color: "#4CD964", label: "Online", bgColor: "#4CD96420" },
-		offline: { color: "#8E8E93", label: "Offline", bgColor: "#8E8E9320" },
-		unknown: { color: "#FF9500", label: "Unknown", bgColor: "#FF950020" },
+		offline: { color: "#ce8e8eff", label: "Offline", bgColor: "#ce8e8eff" },
+		unknown: { color: "#8E8E93", label: "Unknown", bgColor: "#8E8E9320" },
 	};
 
 	const config = statusConfig[deviceStatus];

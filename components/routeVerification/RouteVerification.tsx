@@ -1,39 +1,23 @@
 import useAuthStore from "@/store/authStore";
-import {
-	Slot,
-	usePathname,
-	useRootNavigationState,
-	useRouter,
-} from "expo-router";
-import { useEffect } from "react";
+import { Redirect, usePathname } from "expo-router";
+import Loading from "../loading/Loadig";
 
 const RouteVerification = ({ children }: { children: React.ReactNode }) => {
 	const isAuthenticated = useAuthStore((state) => state.isAuthenticated);
 	const isHydrated = useAuthStore((state) => state.isHydrated);
-	const router = useRouter();
 	const pathname = usePathname();
-	const rootNavigationState = useRootNavigationState();
 
-	useEffect(() => {
-		console.log("rootNavigationState", rootNavigationState);
-		if (!isHydrated || !rootNavigationState?.key) return;
+	if (!isHydrated) {
+		return <Loading />;
+	}
 
-		console.log("RouteVerification: isAuthenticated =", isAuthenticated);
-		console.log("RouteVerification: pathname =", pathname);
-
-		if (!isAuthenticated) {
-			if (pathname !== "/") {
-				console.log("RouteVerification: Redirecting to /");
-				router.push("/");
-			}
-		} else if (pathname === "/") {
-			console.log("RouteVerification: Redirecting to /(devices)/index");
-			router.push("/(main)/devices");
+	if (!isAuthenticated) {
+		if (pathname !== "/") {
+			return <Redirect href="/" />;
 		}
-		// Only run when these are ready
-	}, [isAuthenticated, isHydrated, pathname, router, rootNavigationState]);
-
-	if (!isHydrated || !rootNavigationState?.key) return <Slot />;
+	} else if (pathname === "/") {
+		return <Redirect href="/(main)/devices" />;
+	}
 
 	return <>{children}</>;
 };

@@ -26,14 +26,20 @@ export const get = async <T = any>({
 	path,
 	pathComplement = "",
 	config = {},
+	auth = {},
 }: ApiRequestParams): Promise<T> => {
 	try {
 		const { showAlert = true, ...axiosConfig } = config;
 		const url = buildUrl(path, pathComplement);
-		const response: AxiosResponse<T> = await axiosInstance.get(
-			url,
-			axiosConfig
-		);
+		let headers = axiosConfig.headers || {};
+
+		if (auth) {
+			headers = { ...headers, ...auth };
+		}
+		const response: AxiosResponse<T> = await axiosInstance.get(url, {
+			...axiosConfig,
+			headers,
+		});
 		return response.data;
 	} catch (error: any) {
 		throw error;

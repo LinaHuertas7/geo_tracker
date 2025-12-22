@@ -1,46 +1,11 @@
 import DeviceItem from "@/components/device/DeviceItem";
 import DeviceFilter from "@/components/device/DevicesFilter";
+import Loading from "@/components/loading/Loadig";
 import { useColorScheme } from "@/hooks/use-color-scheme";
-import { TraccarDevice } from "@/types/api";
-import { useMemo, useState } from "react";
+import useDevicesStore from "@/store/devicesStore";
+import { useEffect, useMemo, useState } from "react";
 import { ScrollView, Text, View } from "react-native";
 import { createDevicesScreenStyles } from "./devices.styles";
-
-const MOCK_DEVICES: TraccarDevice[] = [
-	{
-		id: 1,
-		name: "Vehicle GPS Tracker",
-		uniqueId: "VH-2023-001",
-		status: "online",
-		lastUpdate: new Date(Date.now() - 5 * 60000).toISOString(),
-		model: "GT06N",
-		contact: "John Doe",
-		category: "vehicle",
-		disabled: false,
-	},
-	{
-		id: 2,
-		name: "Delivery Truck 5",
-		uniqueId: "DT-2023-005",
-		status: "online",
-		lastUpdate: new Date(Date.now() - 15 * 60000).toISOString(),
-		model: "TK905",
-		contact: "Maria Garcia",
-		category: "vehicle",
-		disabled: false,
-	},
-	{
-		id: 3,
-		name: "Personal Tracker",
-		uniqueId: "PT-2023-012",
-		status: "offline",
-		lastUpdate: new Date(Date.now() - 2 * 3600000).toISOString(),
-		model: "Mini A8",
-		contact: "Sarah Johnson",
-		category: "personal",
-		disabled: false,
-	},
-];
 
 export default function DevicesScreen() {
 	const colorScheme = useColorScheme();
@@ -48,18 +13,27 @@ export default function DevicesScreen() {
 		"all" | "online" | "offline"
 	>("all");
 
+	const devices = useDevicesStore((state) => state.devices);
+	const getDevices = useDevicesStore((state) => state.getDevices);
+
+	const loading = useDevicesStore((state) => state.loading);
+
+	useEffect(() => {
+		getDevices();
+	}, [getDevices]);
+
 	const filteredDevices = useMemo(() => {
-		if (activeFilter === "all") return MOCK_DEVICES;
-		return MOCK_DEVICES.filter((device) => device.status === activeFilter);
-	}, [activeFilter]);
+		if (activeFilter === "all") return devices;
+		return devices.filter((device) => device.status === activeFilter);
+	}, [activeFilter, devices]);
 
 	const deviceCount = useMemo(
 		() => ({
-			total: MOCK_DEVICES.length,
-			online: MOCK_DEVICES.filter((d) => d.status === "online").length,
-			offline: MOCK_DEVICES.filter((d) => d.status === "offline").length,
+			total: devices.length,
+			online: devices.filter((d) => d.status === "online").length,
+			offline: devices.filter((d) => d.status === "offline").length,
 		}),
-		[]
+		[devices]
 	);
 
 	const styles = createDevicesScreenStyles(colorScheme ?? "light");
@@ -89,30 +63,35 @@ export default function DevicesScreen() {
 						deviceCount={deviceCount}
 					/>
 
-					<View style={styles.devicesContent}>
-						{filteredDevices.length > 0 ? (
-							filteredDevices.map((device) => (
-								<DeviceItem
-									key={device.uniqueId}
-									device={device}
-									onPress={() =>
-										console.log(
-											"Device pressed:",
-											device.name
-										)
-									}
-								/>
-							))
-						) : (
-							<View style={styles.emptyState}>
-								<Text style={styles.emptyIcon}>📱</Text>
-								<Text style={styles.emptyText}>
-									No devices found{"\n"}
-									Try adjusting your filters
-								</Text>
-							</View>
-						)}
-					</View>
+					{loading ? (
+						<View style={styles.loadingContainer}>
+							<Loading />
+						</View>
+					) : (
+						<View style={styles.devicesContent}>
+							{filteredDevices.length > 0 ? (
+								filteredDevices.map((device) => (
+									<DeviceItem
+										key={device.uniqueId}
+										device={device}
+										onPress={() =>
+											console.log(
+												"Device pressed:",
+												device.name
+											)
+										}
+									/>
+								))
+							) : (
+								<View style={styles.emptyState}>
+									<Text style={styles.emptyText}>
+										No devices found{"\n"}
+										Try adjusting your filters
+									</Text>
+								</View>
+							)}
+						</View>
+					)}
 				</ScrollView>
 			</View>
 		</View>
