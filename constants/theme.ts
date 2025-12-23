@@ -18,6 +18,10 @@ export const Colors = {
 		textSecondary: "#757575",
 		placeholder: "#9E9E9E",
 		filterChipBackground: "#262535ff",
+		outerCircle: "##6a82ba66",
+		innerCircle: "#5B7BC6",
+		fillColor: "#4a90e233",
+		strokeColor: "#4a90e280",
 	},
 	dark: {
 		text: "#ECEDEE",
@@ -33,6 +37,10 @@ export const Colors = {
 		textSecondary: "#B0B0B0",
 		filterChipBackground: tintColorDark,
 		placeholder: "#616161",
+		outerCircle: "#6a82ba66",
+		innerCircle: "#5B7BC6",
+		fillColor: "#4a90e233",
+		strokeColor: "#4a90e280",
 	},
 };
 

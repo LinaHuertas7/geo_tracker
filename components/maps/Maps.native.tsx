@@ -1,6 +1,6 @@
 import { TraccarPosition } from "@/types/api";
 import { useEffect, useRef } from "react";
-import { StyleSheet, View } from "react-native";
+import { View } from "react-native";
 import MapView, {
 	Circle,
 	LatLng,
@@ -8,21 +8,18 @@ import MapView, {
 	PROVIDER_GOOGLE,
 } from "react-native-maps";
 
-const LocationMarker = () => {
-	return (
-		<View style={styles.markerContainer}>
-			<View style={styles.locationPin}>
-				<View style={styles.pinInner} />
-			</View>
-		</View>
-	);
-};
+import { createMapStyles } from "@/components/maps/maps.native.styles";
+import NavigationMarker from "@/components/maps/NavigationMarker";
+import { Colors } from "@/constants/theme";
+import { useColorScheme } from "@/hooks/use-color-scheme.web";
 
 const Maps: React.FC<{ devicesPositions: TraccarPosition[] }> = ({
 	devicesPositions,
 }) => {
-	console.log("Devices Positions in Map:", devicesPositions);
 	const mapRef = useRef<MapView>(null);
+	const colorScheme = useColorScheme();
+	const colors = Colors[colorScheme ?? "light"];
+	const styles = createMapStyles(colorScheme ?? "light");
 
 	useEffect(() => {
 		if (devicesPositions.length > 0 && mapRef.current) {
@@ -36,14 +33,13 @@ const Maps: React.FC<{ devicesPositions: TraccarPosition[] }> = ({
 			const avgLng =
 				coordinates.reduce((sum, c) => sum + c.longitude, 0) /
 				coordinates.length;
-			mapRef.current.setCamera({
-				center: { latitude: avgLat, longitude: avgLng },
-				zoom: 18,
-				animation: {
-					duration: 300,
-					easing: "easeInOut",
+			mapRef.current.animateCamera(
+				{
+					center: { latitude: avgLat, longitude: avgLng },
+					zoom: 18,
 				},
-			});
+				{ duration: 300 }
+			);
 		}
 	}, [devicesPositions]);
 
@@ -52,10 +48,10 @@ const Maps: React.FC<{ devicesPositions: TraccarPosition[] }> = ({
 			ref={mapRef}
 			provider={PROVIDER_GOOGLE}
 			initialRegion={{
-				latitude: 41.3995345,
-				longitude: 2.1909796,
-				latitudeDelta: 0.003,
-				longitudeDelta: 0.003,
+				latitude: 4.711,
+				longitude: -74.0721,
+				latitudeDelta: 0.05,
+				longitudeDelta: 0.05,
 			}}
 			mapType="standard"
 			style={styles.map}
@@ -67,65 +63,26 @@ const Maps: React.FC<{ devicesPositions: TraccarPosition[] }> = ({
 							latitude: position.latitude,
 							longitude: position.longitude,
 						}}
-						radius={100}
-						fillColor="rgba(74, 144, 226, 0.2)"
-						strokeColor="rgba(74, 144, 226, 0.5)"
-						strokeWidth={2}
+						radius={90}
+						fillColor={colors.fillColor}
+						strokeColor={colors.strokeColor}
+						strokeWidth={1}
 					/>
-
 					<Marker
 						coordinate={{
 							latitude: position.latitude,
 							longitude: position.longitude,
 						}}
-						anchor={{ x: 0.5, y: 0.5 }}
+						anchor={{ x: 0.4, y: 0.4 }}
 					>
-						<LocationMarker />
+						<NavigationMarker
+							colorScheme={colorScheme ?? "light"}
+						/>
 					</Marker>
 				</View>
 			))}
 		</MapView>
 	);
 };
-
-const styles = StyleSheet.create({
-	container: {
-		flex: 1,
-	},
-	map: {
-		width: "100%",
-		height: "100%",
-	},
-	markerContainer: {
-		width: 40,
-		height: 40,
-		justifyContent: "center",
-		alignItems: "center",
-	},
-	locationPin: {
-		width: 20,
-		height: 20,
-		borderRadius: 10,
-		backgroundColor: "#4A90E2",
-		borderWidth: 4,
-		borderColor: "white",
-		shadowColor: "#000",
-		shadowOffset: {
-			width: 0,
-			height: 2,
-		},
-		shadowOpacity: 0.3,
-		shadowRadius: 3,
-		elevation: 5,
-		justifyContent: "center",
-		alignItems: "center",
-	},
-	pinInner: {
-		width: 8,
-		height: 8,
-		borderRadius: 4,
-		backgroundColor: "white",
-	},
-});
 
 export default Maps;

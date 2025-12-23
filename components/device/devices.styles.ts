@@ -1,3 +1,4 @@
+import { statusConfig } from "@/constants/filterDevices";
 import { Colors } from "@/constants/theme";
 import { StyleSheet } from "react-native";
 
@@ -6,14 +7,6 @@ export const createDevicesStyles = (
 	deviceStatus: "online" | "offline" | "unknown"
 ) => {
 	const colors = Colors[colorScheme];
-	const statusConfig: Record<
-		string,
-		{ color: string; label: string; bgColor: string }
-	> = {
-		online: { color: "#4CD964", label: "Online", bgColor: "#4CD96420" },
-		offline: { color: "#ce8e8eff", label: "Offline", bgColor: "#ce8e8eff" },
-		unknown: { color: "#8E8E93", label: "Unknown", bgColor: "#8E8E9320" },
-	};
 
 	const config = statusConfig[deviceStatus];
 	return StyleSheet.create({

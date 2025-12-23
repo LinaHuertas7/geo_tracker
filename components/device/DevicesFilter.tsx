@@ -1,3 +1,4 @@
+import { filters } from "@/constants/filterDevices";
 import { useColorScheme } from "@/hooks/use-color-scheme.web";
 import { Text } from "@react-navigation/elements";
 import { TouchableOpacity, View } from "react-native";
@@ -15,16 +16,6 @@ const DeviceFilter: React.FC<DeviceFilterProps> = ({
 	deviceCount,
 }) => {
 	const colorScheme = useColorScheme();
-
-	const filters = [
-		{ key: "all" as const, label: "All", count: deviceCount.total },
-		{ key: "online" as const, label: "Online", count: deviceCount.online },
-		{
-			key: "offline" as const,
-			label: "Offline",
-			count: deviceCount.offline,
-		},
-	];
 
 	const styles = createDevicesFilterStyles(colorScheme ?? "light");
 
@@ -48,7 +39,7 @@ const DeviceFilter: React.FC<DeviceFilterProps> = ({
 								styles.filterTextActive,
 						]}
 					>
-						{filter.label} ({filter.count})
+						{filter.label} ({deviceCount[filter.countKey]})
 					</Text>
 				</TouchableOpacity>
 			))}

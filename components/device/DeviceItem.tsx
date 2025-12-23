@@ -1,3 +1,4 @@
+import { statusConfig } from "@/constants/filterDevices";
 import { useColorScheme } from "@/hooks/use-color-scheme.web";
 import { TraccarDevice } from "@/types/api";
 import formatLastUpdate from "@/utils/dateFormat";
@@ -44,7 +45,9 @@ const DeviceItem: React.FC<DeviceCardProps> = ({ device, onPress }) => {
 					</View>
 				</View>
 				<View style={styles.statusBadge}>
-					<Text style={styles.statusText}>{device.status}</Text>
+					<Text style={styles.statusText}>
+						{statusConfig[device.status].label}
+					</Text>
 				</View>
 			</View>
 
@@ -52,7 +55,7 @@ const DeviceItem: React.FC<DeviceCardProps> = ({ device, onPress }) => {
 
 			<View style={styles.infoGrid}>
 				<View style={styles.infoRow}>
-					<Text style={styles.infoLabel}>Last Update:</Text>
+					<Text style={styles.infoLabel}>Última actualización:</Text>
 					<Text style={styles.infoValue}>
 						{formatLastUpdate(device.lastUpdate)}
 					</Text>
