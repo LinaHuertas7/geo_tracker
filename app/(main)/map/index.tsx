@@ -1,20 +1,26 @@
-import React from "react";
+import Map from "@/components/maps/Maps";
+import useDevicesStore from "@/store/devicesStore";
+import { useEffect } from "react";
 import { StyleSheet, View } from "react-native";
-import MapView, { PROVIDER_GOOGLE } from "react-native-maps";
 
 export default function MapScreen() {
+	const selectedDevice = useDevicesStore((state) => state.selectedDevice);
+
+	const getLastKnownLocation = useDevicesStore(
+		(state) => state.getLastKnownLocation
+	);
+
+	useEffect(() => {
+		if (selectedDevice) {
+			getLastKnownLocation(selectedDevice?.positionId || 0);
+		}
+	}, [getLastKnownLocation, selectedDevice]);
+
+	const devicePositions = useDevicesStore((state) => state.devicePositions);
+
 	return (
 		<View style={styles.container}>
-			<MapView
-				provider={PROVIDER_GOOGLE}
-				initialRegion={{
-					latitude: 41.3995345,
-					longitude: 2.1909796,
-					latitudeDelta: 0.003,
-					longitudeDelta: 0.003,
-				}}
-				mapType="standard"
-			></MapView>
+			<Map devicesPositions={devicePositions} />
 		</View>
 	);
 }
@@ -22,9 +28,5 @@ export default function MapScreen() {
 const styles = StyleSheet.create({
 	container: {
 		flex: 1,
-	},
-	map: {
-		width: "100%",
-		height: "100%",
 	},
 });

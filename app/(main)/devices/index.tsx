@@ -3,6 +3,8 @@ import DeviceFilter from "@/components/device/DevicesFilter";
 import Loading from "@/components/loading/Loadig";
 import { useColorScheme } from "@/hooks/use-color-scheme";
 import useDevicesStore from "@/store/devicesStore";
+import { TraccarDevice } from "@/types/api";
+import { useRouter } from "expo-router";
 import { useEffect, useMemo, useState } from "react";
 import { RefreshControl, ScrollView, Text, View } from "react-native";
 import { createDevicesScreenStyles } from "./devices.styles";
@@ -19,6 +21,9 @@ export default function DevicesScreen() {
 	const getDevices = useDevicesStore((state) => state.getDevices);
 
 	const loading = useDevicesStore((state) => state.loading);
+
+	const selectDevice = useDevicesStore((state) => state.selectDevice);
+	const router = useRouter();
 
 	useEffect(() => {
 		getDevices();
@@ -43,6 +48,11 @@ export default function DevicesScreen() {
 		}),
 		[devices]
 	);
+
+	const handleSelectDevice = (device: TraccarDevice) => {
+		selectDevice(device);
+		router.push("/(main)/map");
+	};
 
 	const styles = createDevicesScreenStyles(colorScheme ?? "light");
 
@@ -89,10 +99,7 @@ export default function DevicesScreen() {
 										key={device.uniqueId}
 										device={device}
 										onPress={() =>
-											console.log(
-												"Device pressed:",
-												device.name
-											)
+											handleSelectDevice(device)
 										}
 									/>
 								))
