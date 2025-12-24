@@ -11,16 +11,19 @@ export default function MapScreen() {
 	);
 
 	useEffect(() => {
-		if (selectedDevice) {
-			getLastKnownLocation(selectedDevice?.positionId || 0);
+		if (selectedDevice?.positionId) {
+			getLastKnownLocation(selectedDevice.positionId);
 		}
-	}, [getLastKnownLocation, selectedDevice]);
+	}, [getLastKnownLocation, selectedDevice?.positionId]);
 
 	const devicePositions = useDevicesStore((state) => state.devicePositions);
 
 	return (
 		<View style={styles.container}>
-			<Map devicesPositions={devicePositions} />
+			<Map
+				key={selectedDevice?.positionId ?? "no-pos"}
+				devicesPositions={devicePositions}
+			/>
 		</View>
 	);
 }

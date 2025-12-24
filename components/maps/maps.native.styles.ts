@@ -13,13 +13,17 @@ export const createMapStyles = (colorScheme: "light" | "dark" = "light") => {
 			height: "100%",
 		},
 		markerContainer: {
-			borderRadius: 30,
+			width: 40,
+			height: 40,
 			justifyContent: "center",
 			alignItems: "center",
+			overflow: "visible",
+			zIndex: 100,
 		},
+
 		innerCircle: {
-			width: 50,
-			height: 50,
+			width: 30,
+			height: 30,
 			borderRadius: 30,
 			backgroundColor: colors.innerCircle,
 			justifyContent: "center",
@@ -31,7 +35,6 @@ export const createMapStyles = (colorScheme: "light" | "dark" = "light") => {
 			},
 			shadowOpacity: 0.25,
 			shadowRadius: 3.84,
-			elevation: 5,
 		},
 		triangle: {
 			marginTop: -2,

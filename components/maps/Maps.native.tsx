@@ -1,6 +1,6 @@
 import { TraccarPosition } from "@/types/api";
-import { useEffect, useRef } from "react";
-import { View } from "react-native";
+import React, { useEffect, useRef } from "react";
+import { Image, View } from "react-native";
 import MapView, {
 	Circle,
 	LatLng,
@@ -9,7 +9,6 @@ import MapView, {
 } from "react-native-maps";
 
 import { createMapStyles } from "@/components/maps/maps.native.styles";
-import NavigationMarker from "@/components/maps/NavigationMarker";
 import { Colors } from "@/constants/theme";
 import { useColorScheme } from "@/hooks/use-color-scheme.web";
 
@@ -57,7 +56,7 @@ const Maps: React.FC<{ devicesPositions: TraccarPosition[] }> = ({
 			style={styles.map}
 		>
 			{devicesPositions.map((position, index) => (
-				<View key={index}>
+				<React.Fragment key={index}>
 					<Circle
 						center={{
 							latitude: position.latitude,
@@ -69,17 +68,24 @@ const Maps: React.FC<{ devicesPositions: TraccarPosition[] }> = ({
 						strokeWidth={1}
 					/>
 					<Marker
+						key={`marker-${index}`}
 						coordinate={{
 							latitude: position.latitude,
 							longitude: position.longitude,
 						}}
 						anchor={{ x: 0.5, y: 0.5 }}
+						tracksViewChanges={true}
+						zIndex={999}
 					>
-						<NavigationMarker
-							colorScheme={colorScheme ?? "light"}
-						/>
+						<View style={styles.markerContainer}>
+							<Image
+								source={require("@/assets/images/navigation_marker.png")}
+								style={{ width: 40, height: 40 }}
+								resizeMode="contain"
+							/>
+						</View>
 					</Marker>
-				</View>
+				</React.Fragment>
 			))}
 		</MapView>
 	);
