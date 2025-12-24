@@ -73,7 +73,7 @@ const Maps: React.FC<{ devicesPositions: TraccarPosition[] }> = ({
 							latitude: position.latitude,
 							longitude: position.longitude,
 						}}
-						anchor={{ x: 0.4, y: 0.4 }}
+						anchor={{ x: 0.5, y: 0.5 }}
 					>
 						<NavigationMarker
 							colorScheme={colorScheme ?? "light"}

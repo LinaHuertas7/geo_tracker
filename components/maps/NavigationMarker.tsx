@@ -11,17 +11,15 @@ const NavigationMarker = ({
 
 	return (
 		<View style={styles.markerContainer}>
-			<View style={styles.outerCircle}>
-				<View style={styles.innerCircle}>
-					<Svg
-						width="24"
-						height="24"
-						viewBox="0 0 24 24"
-						style={styles.triangle}
-					>
-						<Polygon points="12,6 16,18 12,15 8,18" fill="white" />
-					</Svg>
-				</View>
+			<View style={styles.innerCircle}>
+				<Svg
+					width="40"
+					height="40"
+					viewBox="0 0 24 24"
+					style={styles.triangle}
+				>
+					<Polygon points="12,6 16,18 12,15 8,18" fill="white" />
+				</Svg>
 			</View>
 		</View>
 	);

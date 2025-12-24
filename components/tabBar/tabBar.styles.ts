@@ -6,7 +6,7 @@ export const createTabBarStyles = () => {
 		tabItemContainer: {
 			alignItems: "center",
 			justifyContent: "center",
-			minWidth: 60,
+			minWidth: 90,
 		},
 		icon: {
 			marginTop: 4,
