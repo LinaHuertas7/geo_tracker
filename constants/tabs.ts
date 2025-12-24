@@ -12,21 +12,21 @@ const TAB_CONFIGS: TabConfig[] = [
 		iconName: "map-marker-outline",
 		iconFocusedName: "map-marker",
 		iconType: "material",
-		label: "Map",
+		label: "Mapa",
 	},
 	{
 		name: "devices",
 		iconName: "devices",
 		iconFocusedName: "devices",
 		iconType: "material",
-		label: "Devices",
+		label: "Dispositivos",
 	},
 	{
-		name: "settings",
-		iconName: "settings-outline",
-		iconFocusedName: "settings",
+		name: "profile",
+		iconName: "person-outline",
+		iconFocusedName: "person",
 		iconType: "ionicons",
-		label: "Settings",
+		label: "Perfil",
 	},
 ];
 

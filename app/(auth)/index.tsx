@@ -3,7 +3,7 @@ import Input from "@/components/form/Input";
 import { Text } from "@react-navigation/elements";
 import { useRouter } from "expo-router";
 import { useState } from "react";
-import { Alert, ScrollView, useColorScheme, View } from "react-native";
+import { ScrollView, useColorScheme, View } from "react-native";
 
 import Button from "@/components/button/Button";
 import useAuthStore from "@/store/authStore";
@@ -23,7 +23,7 @@ export default function HomeScreen() {
 	const styles = createAuthStyles(colorScheme ?? "light");
 	const router = useRouter();
 
-	const { isAuthenticated, login, loading, error } = useAuthStore();
+	const { isAuthenticated, login, loading } = useAuthStore();
 
 	const handleInputChange = (name: string, value: string) => {
 		setFormValues((prev) => ({
@@ -63,7 +63,11 @@ export default function HomeScreen() {
 		} catch (error) {
 			if (isAuthError(error)) {
 				const message = handleAuthError(error);
-				Alert.alert("Error", message);
+				setErrors({ general: message });
+			} else {
+				setErrors({
+					general: "Authentication failed. Please try again.",
+				});
 			}
 		}
 	};
@@ -103,6 +107,12 @@ export default function HomeScreen() {
 							isPassword
 							error={errors.password}
 						/>
+
+						{errors.general && (
+							<Text style={styles.errorText}>
+								{errors.general}
+							</Text>
+						)}
 
 						<Text style={styles.forgotPasswordText}>
 							Forgot Password?

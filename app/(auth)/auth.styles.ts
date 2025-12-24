@@ -10,6 +10,15 @@ export const createAuthStyles = (colorScheme: "light" | "dark") => {
 			backgroundColor: colors.background,
 		},
 
+		errorText: {
+			fontSize: 12,
+			color: "#F44336",
+			marginTop: 0,
+			marginBottom: 24,
+			textAlign: "center",
+			fontWeight: "500",
+		},
+
 		scrollContent: {
 			justifyContent: "center",
 			paddingHorizontal: 20,

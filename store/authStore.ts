@@ -115,6 +115,8 @@ const useAuthStore = create<AuthState>()(
 					token: null,
 					isAuthenticated: false,
 					error: null,
+					sessionToken: null,
+					loading: false,
 				});
 			},
 

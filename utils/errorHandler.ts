@@ -2,7 +2,7 @@ import { ApiError } from "@/types/api";
 
 const RESPONSE_MESSAGES: Record<number, string> = {
 	400: "Solicitud inválida. Por favor, verifica los datos ingresados.",
-	401: "No autorizado. Por favor, inicia sesión nuevamente.",
+	401: "Datos incorrectos. Por favor, verifica tu correo electrónico y contraseña.",
 	403: "Prohibido. No tienes permiso para realizar esta acción.",
 	404: "Recurso no encontrado. Verifica la URL o el recurso solicitado.",
 	500: "Error del servidor. Por favor, intenta más tarde.",
