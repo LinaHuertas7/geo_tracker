@@ -10,9 +10,9 @@ export const statusConfig: Record<
 > = {
 	online: { color: "#4CD964", label: "En línea", bgColor: "#4CD96420" },
 	offline: {
-		color: "#ce8e8eff",
-		label: "Sin conexión",
-		bgColor: "#ce8e8eff",
+		color: "#FF3B30",
+		label: "Desconectado",
+		bgColor: "#FF3B3020",
 	},
 	unknown: {
 		color: "#8E8E93",

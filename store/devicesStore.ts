@@ -13,6 +13,7 @@ interface AuthState {
 	getDevices: () => Promise<void>;
 	selectDevice: (device: TraccarDevice | null) => Promise<void>;
 	getLastKnownLocation: (positionId: number) => Promise<void>;
+	updateDevice: (updatedDevice: TraccarDevice) => void;
 }
 
 const useDevicesStore = create<AuthState>()((set) => ({
@@ -96,6 +97,21 @@ const useDevicesStore = create<AuthState>()((set) => ({
 			throw apiError;
 		}
 	},
+
+	updateDevice: (updatedDevice: TraccarDevice) => {
+		set((state) => ({
+			devices: state.devices.map((device) =>
+				device.id === updatedDevice.id ? updatedDevice : device
+			),
+		}));
+	},
+	/*
+
+	getClimateLocation: async (
+		lat: number,
+		lon: number,
+		exclude = "minutely"
+	) => {}, */
 }));
 
 export default useDevicesStore;

@@ -13,3 +13,5 @@ export const endPoints = {
 
 	SOCKET: "/socket",
 };
+
+export const CLIMATE_API = "https://api.openweathermap.org/data/3.0/onecall";

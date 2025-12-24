@@ -5,7 +5,7 @@ import axios, { AxiosInstance, AxiosResponse } from "axios";
 export const axiosInstance: AxiosInstance = axios.create({
 	baseURL: BASE_URL,
 	timeout: 15000,
-
+	withCredentials: true,
 	headers: {
 		Accept: "application/json",
 	},
@@ -29,7 +29,7 @@ export const get = async <T = any>({
 	auth = {},
 }: ApiRequestParams): Promise<T> => {
 	try {
-		const { showAlert = true, ...axiosConfig } = config;
+		const { ...axiosConfig } = config;
 		const url = buildUrl(path, pathComplement);
 		let headers = axiosConfig.headers || {};
 
@@ -54,7 +54,7 @@ export const post = async <AxiosResponse>({
 	auth = {},
 }: ApiRequestWithDataParams): Promise<AxiosResponse> => {
 	try {
-		const { showAlert = true, ...axiosConfig } = config;
+		const { ...axiosConfig } = config;
 		const url = buildUrl(path, pathComplement);
 
 		let requestData = data;

@@ -3,8 +3,12 @@ import { TabBarItem } from "@/components/tabBar/TabBarItem";
 import { TAB_CONFIGS } from "@/constants/tabs";
 import { Colors } from "@/constants/theme";
 import { useColorScheme } from "@/hooks/use-color-scheme.web";
+import websocketservice from "@/services/websocketservice";
+import useDevicesStore from "@/store/devicesStore";
+import { TraccarDevice } from "@/types/api";
 import { Tabs } from "expo-router";
-import { Platform } from "react-native";
+import { useEffect } from "react";
+import { AppState, AppStateStatus, Platform } from "react-native";
 import { useSafeAreaInsets } from "react-native-safe-area-context";
 
 export default function MainLayout() {
@@ -19,6 +23,48 @@ export default function MainLayout() {
 		insets,
 		colorScheme ?? "light"
 	);
+
+	const updateDevice = useDevicesStore((state) => state.updateDevice);
+
+	useEffect(() => {
+		websocketservice.connect();
+
+		const handleDevices = (devices: TraccarDevice[]) => {
+			for (const device of devices) {
+				updateDevice(device);
+			}
+		};
+
+		websocketservice.addCallbacks("devices", handleDevices);
+
+		const subscription = AppState.addEventListener(
+			"change",
+			(nextAppState: AppStateStatus) => {
+				if (
+					AppState.currentState.match(/inactive|background/) &&
+					nextAppState === "active"
+				) {
+					console.log(
+						"App came to foreground - reconnecting WebSocket"
+					);
+					websocketservice.connect();
+				}
+
+				if (nextAppState.match(/inactive|background/)) {
+					console.log(
+						"App going to background - keeping WebSocket open"
+					);
+				}
+
+				AppState.currentState = nextAppState;
+			}
+		);
+
+		return () => {
+			websocketservice.disconnect();
+			subscription.remove();
+		};
+	}, [updateDevice]);
 
 	return (
 		<Tabs
