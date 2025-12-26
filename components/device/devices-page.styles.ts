@@ -3,7 +3,6 @@ import { StyleSheet } from "react-native";
 
 export const createDevicesScreenStyles = (colorScheme: "light" | "dark") => {
 	const colors = Colors[colorScheme];
-
 	return StyleSheet.create({
 		loadingContainer: {
 			flex: 1,

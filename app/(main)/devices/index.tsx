@@ -1,4 +1,5 @@
 import DeviceItem from "@/components/device/DeviceItem";
+import { createDevicesScreenStyles } from "@/components/device/devices-page.styles";
 import DeviceFilter from "@/components/device/DevicesFilter";
 import Loading from "@/components/loading/Loadig";
 import { useColorScheme } from "@/hooks/use-color-scheme";
@@ -7,7 +8,6 @@ import { TraccarDevice } from "@/types/api";
 import { useRouter } from "expo-router";
 import { useEffect, useMemo, useState } from "react";
 import { RefreshControl, ScrollView, Text, View } from "react-native";
-import { createDevicesScreenStyles } from "./devices.styles";
 
 export default function DevicesScreen() {
 	const colorScheme = useColorScheme();

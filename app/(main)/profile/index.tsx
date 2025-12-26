@@ -1,4 +1,4 @@
-import { createProfileStyles } from "@/app/(main)/profile/profile.styles";
+import { createProfileStyles } from "@/components/profile/profile.styles";
 import { ProfileItem, profileItems } from "@/constants/profile";
 import { Colors } from "@/constants/theme";
 import { useColorScheme } from "@/hooks/use-color-scheme.web";

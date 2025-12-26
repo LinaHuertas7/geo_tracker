@@ -5,11 +5,11 @@ import { useRouter } from "expo-router";
 import { useState } from "react";
 import { ScrollView, useColorScheme, View } from "react-native";
 
+import { createAuthStyles } from "@/components/auth/auth-styles";
 import Button from "@/components/button/Button";
 import useAuthStore from "@/store/authStore";
 import { handleAuthError, isAuthError } from "@/utils/errorHandler";
 import { validateForm } from "@/utils/formValidator";
-import { createAuthStyles } from "./auth.styles";
 
 export default function HomeScreen() {
 	const [errors, setErrors] = useState<Record<string, string>>({});

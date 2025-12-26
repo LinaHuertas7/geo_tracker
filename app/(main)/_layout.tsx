@@ -112,12 +112,6 @@ export default function MainLayout() {
 					}}
 				/>
 			))}
-			<Tabs.Screen
-				name="scan"
-				options={{
-					href: null,
-				}}
-			/>
 		</Tabs>
 	);
 }
