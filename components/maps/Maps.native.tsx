@@ -12,6 +12,7 @@ import { createMapStyles } from "@/components/maps/maps.native.styles";
 import WeatherModal from "@/components/modal/WeatherModal";
 import { Colors } from "@/constants/theme";
 import { useColorScheme } from "@/hooks/use-color-scheme.web";
+import useDevicesStore from "@/store/devicesStore";
 import useWeatherStore from "@/store/weatherStore";
 import { centerCoordinatesHelper } from "@/utils/mapView";
 import { Image, View } from "react-native";
@@ -66,6 +67,21 @@ const Maps: React.FC<MapsProps> = ({ filteredPositionsBySelectedDevice }) => {
 	const handleCloseWeatherModal = () => {
 		setShowWeatherOverlay(false);
 	};
+
+	const selectedDeviceId = useDevicesStore((state) =>
+		state.selectedDevice ? state.selectedDevice.id : null
+	);
+	const getAllPositionsByDevice = useDevicesStore(
+		(state) => state.getAllPositionsByDevice
+	);
+
+	useEffect(() => {
+		if (selectedDeviceId !== null) {
+			getAllPositionsByDevice(selectedDeviceId);
+		}
+	}, [selectedDeviceId, getAllPositionsByDevice]);
+
+	const allPositions = useDevicesStore((state) => state.allPositions);
 
 	return !lastPosition ? (
 		<Loading />

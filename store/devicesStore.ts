@@ -9,8 +9,10 @@ interface AuthState {
 	error: ApiError | null;
 	selectedDevice: TraccarDevice | null;
 	devicePositions: TraccarPosition[] | [];
+	allPositions: TraccarPosition[] | [];
 
 	getDevices: () => Promise<void>;
+	getAllPositionsByDevice: (deviceId: number) => Promise<void>;
 	selectDevice: (device: TraccarDevice | null) => Promise<void>;
 	updateDevice: (updatedDevice: TraccarDevice) => void;
 	updatePositions: (updatedPosition: TraccarPosition) => void;
@@ -22,6 +24,7 @@ const useDevicesStore = create<AuthState>()((set) => ({
 	loading: false,
 	error: null,
 	devicePositions: [],
+	allPositions: [],
 
 	getDevices: async () => {
 		set({ loading: true, error: null });
@@ -46,6 +49,42 @@ const useDevicesStore = create<AuthState>()((set) => ({
 			const apiError: ApiError = {
 				message:
 					error.response?.data?.message || "Failed to fetch devices",
+				statusCode: error.response?.status,
+				data: error.response?.data,
+			};
+			set({
+				error: apiError,
+				loading: false,
+			});
+			throw apiError;
+		}
+	},
+
+	getAllPositionsByDevice: async (deviceId: number) => {
+		set({ loading: true, error: null });
+		try {
+			const response = await get<TraccarPosition[]>({
+				path: "POSITIONS",
+				pathComplement: `?deviceId=${deviceId}&from=2024-11-22T18:30:00Z&to=2026-12-22T18:30:00Z`,
+				config: { showAlert: false },
+				auth: {
+					Authorization: useAuthStore.getState().token || "",
+				},
+			});
+
+			if (response && Array.isArray(response)) {
+				set({
+					allPositions: response,
+					loading: false,
+				});
+			} else {
+				throw new Error("No se recibió sesión válida");
+			}
+		} catch (error: any) {
+			const apiError: ApiError = {
+				message:
+					error.response?.data?.message ||
+					"Failed to fetch device positions",
 				statusCode: error.response?.status,
 				data: error.response?.data,
 			};

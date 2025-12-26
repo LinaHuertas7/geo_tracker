@@ -25,6 +25,8 @@ export const Colors = {
 		modalBackground: "#FFFFFF",
 		backdrop: "#00000099",
 		colorRow: "#f6f6f6ff",
+		quickSelectBackground: "#e0f7f5ff",
+		quickSelectBorder: "#04c3a6ff",
 	},
 	dark: {
 		text: "#ECEDEE",
@@ -47,6 +49,8 @@ export const Colors = {
 		modalBackground: "#1e2122ff",
 		backdrop: "#00000099",
 		colorRow: "#2c2c2cff",
+		quickSelectBackground: "#043331ff",
+		quickSelectBorder: "#04c3a6ff",
 	},
 };
 
