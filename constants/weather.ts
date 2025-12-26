@@ -1,0 +1,17 @@
+export const WEATHER_TRANSLATIONS: { [key: string]: string } = {
+	"clear sky": "Cielo despejado",
+	"few clouds": "Pocas nubes",
+	"scattered clouds": "Nubes dispersas",
+	"broken clouds": "Nubosidad fragmentada",
+	"overcast clouds": "Cielo nublado",
+	"shower rain": "Chubascos",
+	rain: "Lluvia",
+	"light rain": "Lluvia ligera",
+	"moderate rain": "Lluvia moderada",
+	"heavy intensity rain": "Lluvia intensa",
+	thunderstorm: "Tormenta eléctrica",
+	snow: "Nieve",
+	mist: "Neblina",
+	fog: "Niebla",
+	haze: "Bruma",
+};

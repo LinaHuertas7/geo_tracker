@@ -7,7 +7,7 @@ import websocketservice from "@/services/websocketservice";
 import useDevicesStore from "@/store/devicesStore";
 import { TraccarDevice } from "@/types/api";
 import { Tabs } from "expo-router";
-import { useEffect } from "react";
+import { useEffect, useRef } from "react";
 import { AppState, AppStateStatus, Platform } from "react-native";
 import { useSafeAreaInsets } from "react-native-safe-area-context";
 
@@ -26,6 +26,8 @@ export default function MainLayout() {
 
 	const updateDevice = useDevicesStore((state) => state.updateDevice);
 
+	const appStateRef = useRef<AppStateStatus>(AppState.currentState);
+
 	useEffect(() => {
 		websocketservice.connect();
 
@@ -35,13 +37,21 @@ export default function MainLayout() {
 			}
 		};
 
+		const handlePositionsRealTime = (positions: any[]) => {
+			const updatePositions = useDevicesStore.getState().updatePositions;
+			for (const position of positions) {
+				updatePositions(position);
+			}
+		};
+
 		websocketservice.addCallbacks("devices", handleDevices);
+		websocketservice.addCallbacks("positions", handlePositionsRealTime);
 
 		const subscription = AppState.addEventListener(
 			"change",
 			(nextAppState: AppStateStatus) => {
 				if (
-					AppState.currentState.match(/inactive|background/) &&
+					appStateRef.current.match(/inactive|background/) &&
 					nextAppState === "active"
 				) {
 					console.log(
@@ -56,11 +66,16 @@ export default function MainLayout() {
 					);
 				}
 
-				AppState.currentState = nextAppState;
+				appStateRef.current = nextAppState;
 			}
 		);
 
 		return () => {
+			websocketservice.removeCallbacks("devices", handleDevices);
+			websocketservice.removeCallbacks(
+				"positions",
+				handlePositionsRealTime
+			);
 			websocketservice.disconnect();
 			subscription.remove();
 		};

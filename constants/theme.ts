@@ -22,6 +22,9 @@ export const Colors = {
 		innerCircle: "#5B7BC6",
 		fillColor: "#4a90e233",
 		strokeColor: "#4a90e280",
+		modalBackground: "#FFFFFF",
+		backdrop: "#00000099",
+		colorRow: "#f6f6f6ff",
 	},
 	dark: {
 		text: "#ECEDEE",
@@ -41,6 +44,9 @@ export const Colors = {
 		innerCircle: "#5B7BC6",
 		fillColor: "#4a90e233",
 		strokeColor: "#4a90e280",
+		modalBackground: "#1e2122ff",
+		backdrop: "#00000099",
+		colorRow: "#2c2c2cff",
 	},
 };
 

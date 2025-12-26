@@ -32,7 +32,6 @@ export const get = async <T = any>({
 		const { ...axiosConfig } = config;
 		const url = buildUrl(path, pathComplement);
 		let headers = axiosConfig.headers || {};
-
 		if (auth) {
 			headers = { ...headers, ...auth };
 		}
