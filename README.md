@@ -1,50 +1,82 @@
-# Welcome to your Expo app 👋
+# Geo Tracker App
 
-This is an [Expo](https://expo.dev) project created with [`create-expo-app`](https://www.npmjs.com/package/create-expo-app).
+## Descripción del proyecto
 
-## Get started
+GeoTracker es una aplicación móvil desarrollada con **React Native** y **Expo**, orientada al monitoreo y visualización de dispositivos GPS en tiempo real mediante la integración con el servidor **Traccar.org**
 
-1. Install dependencies
+El proyecto se enfoca en la comunicación en tiempo real, la gestión del estado global y una experiencia de usuario consistente. La aplicación permite autenticación de usuarios, persistencia de sesión entre cierres de la app y una navegación estructurada entre vistas dedicadas al seguimiento de dispositivos
 
-   ```bash
-   npm install
-   ```
+GeoTracker ofrece una vista de dispositivos con actualización en tiempo real a través de **WebSockets**, así como una visualización en mapa de la última posición conocida y de la ubicación en tiempo real de cada dispositivo mediante los eventos recibidos por WebSocket. Esta información se complementa con datos externos, como los datos del clima actual obtenidos desde la API de **OpenWeather**
 
-2. Start the app
+## Instalación
 
-   ```bash
-   npx expo start
-   ```
-
-In the output, you'll find options to open the app in a
-
-- [development build](https://docs.expo.dev/develop/development-builds/introduction/)
-- [Android emulator](https://docs.expo.dev/workflow/android-studio-emulator/)
-- [iOS simulator](https://docs.expo.dev/workflow/ios-simulator/)
-- [Expo Go](https://expo.dev/go), a limited sandbox for trying out app development with Expo
-
-You can start developing by editing the files inside the **app** directory. This project uses [file-based routing](https://docs.expo.dev/router/introduction).
-
-## Get a fresh project
-
-When you're ready, run:
+### Requisitos previos
 
 ```bash
-npm run reset-project
+-   [Node.js](https://nodejs.org/) (versión 14 o superior)
+-   [Expo CLI](https://docs.expo.dev/get-started/installation/)
+-   [npm]
+-   [Emulador de Android](https://developer.android.com/studio/run/emulator) o [Simulador de iOS](https://developer.apple.com/documentation/xcode/running_your_app_in_the_simulator_or_on_a_device) (opcional, para pruebas en dispositivos virtuales)
 ```
 
-This command will move the starter code to the **app-example** directory and create a blank **app** directory where you can start developing.
+### Pasos de instalación
 
-## Learn more
+1. Clona este repositorio
 
-To learn more about developing your project with Expo, look at the following resources:
+    ```bash
+    git clone https://github.com/LinaHuertas7/geo_tracker.git
+    ```
 
-- [Expo documentation](https://docs.expo.dev/): Learn fundamentals, or go into advanced topics with our [guides](https://docs.expo.dev/guides).
-- [Learn Expo tutorial](https://docs.expo.dev/tutorial/introduction/): Follow a step-by-step tutorial where you'll create a project that runs on Android, iOS, and the web.
+2. Navega al directorio del proyecto
 
-## Join the community
+    ```bash
+    cd geo_tracker
+    ```
 
-Join our community of developers creating universal apps.
+3. Instala las dependencias del proyecto
 
-- [Expo on GitHub](https://github.com/expo/expo): View our open source platform and contribute.
-- [Discord community](https://chat.expo.dev): Chat with Expo users and ask questions.
+    ```bash
+    npm install
+    ```
+
+4. Configura las variables de entorno
+
+    Crea un archivo `.env` en la raíz del proyecto y agrega las siguientes variables:
+
+    ```env
+    OPEN_WEATHER_API_KEY=<TU_API_KEY_DE_OPENWEATHER>
+    ```
+
+5. Inicia el servidor de desarrollo de Expo
+
+    ```bash
+    npx expo start
+
+    npm run android # para Android
+
+    npm run ios # para iOS
+
+    npm run web # para web
+    ```
+
+## Decisiones técnicas
+
+### Manejo de estado global – Zustand
+
+### Gestión de estado
+
+Para la gestión del estado global opté por usar **Zustand**, ya que permite manejar el estado de forma simple y clara mediante stores personalizados, manteniendo la lógica desacoplada de los componentes. Esta decisión me permitió estructurar de manera ordenada información como la sesión del usuario, el listado de dispositivos y los datos que llegan en tiempo real desde el WebSocket, sin mezclar lógica de negocio con la UI. Consideré alternativas como Redux, pero para el alcance de este proyecto implicaba una configuración más compleja poco escalable. En el caso del Context API, lo descarté porque el estado cambia con frecuencia y depende de múltiples fuentes, lo que puede terminar afectando la legibilidad y el rendimiento
+
+### Comunicación en tiempo real – WebSocket
+
+Para la comunicación en tiempo real con el servidor de Traccar implementé un servicio de WebSocket, ya que el comportamiento principal de la aplicación depende de recibir actualizaciones constantes del estado y la ubicación de los dispositivos. En lugar de una implementación básica, estructuré la conexión siguiendo buenas prácticas, apoyándome de una guia estructurada que cuenta con una arquitectura limpia y escalable https://medium.com/@tusharkumar27864/best-practices-of-using-websockets-real-time-communication-in-react-native-projects-89e749ba2e3f con el objetivo de tener mayor control sobre el ciclo de vida de la conexión, manejo de reconexiones y suscripciones a eventos específicos
+
+### UX / UI
+
+Busqué que la navegación fuera intuitiva y amigable, especialmente en vistas como dispositivos y mapa, así mismo implementé soporte para modo claro y oscuro (dependiendo de la preferencia del dispositivo). La intención fue acompañar el flujo del usuario con una UI funcional y agradable
+
+### Estructura de carpetas
+
+Partí de la estructura base que propone **Expo** y decidí extenderla en lugar de modificarla por completo, con la intención de mantener una organización familiar y fácil de entender para cualquier desarrollador que quiera trabajar en el proyecto. Esto ayuda a reducir la curva de aprendizaje y a que la navegación del código sea más predecible.
+
+Separé el proyecto en carpetas claras para componentes, servicios, estado, constantes y tipos, buscando que cada parte tenga una responsabilidad bien definida. Esta organización me permitió mantener la lógica de negocio, la comunicación con APIs y el estado global desacoplados de la UI, facilitando el mantenimiento y la escalabilidad del proyecto
