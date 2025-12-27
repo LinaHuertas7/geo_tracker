@@ -57,10 +57,13 @@ const Maps: React.FC<MapsProps> = ({ filteredPositionsBySelectedDevice }) => {
 		}
 	}, [centerCoordinates, mapReady]);
 
-	const handleOnPressMarker = () => {
-		if (lastPosition) {
-			getWeatherData(lastPosition.latitude, lastPosition.longitude);
+	const handleOnPressMarker = async () => {
+		if (!lastPosition) return;
+		try {
+			await getWeatherData(lastPosition.latitude, lastPosition.longitude);
 			setShowWeatherOverlay(true);
+		} catch (error) {
+			console.error("Failed to get weather data:", error);
 		}
 	};
 
@@ -80,8 +83,6 @@ const Maps: React.FC<MapsProps> = ({ filteredPositionsBySelectedDevice }) => {
 			getAllPositionsByDevice(selectedDeviceId);
 		}
 	}, [selectedDeviceId, getAllPositionsByDevice]);
-
-	const allPositions = useDevicesStore((state) => state.allPositions);
 
 	return !lastPosition ? (
 		<Loading />
